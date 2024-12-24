@@ -3,10 +3,10 @@ __pycache__/
 *.pyc
 
 # Ignore logs
-*.log
+detection_log.txt
 
 # Ignore virtual environment
-#myenv/
+myenv/
 
 # Ignore large files
 yolov3.weights
