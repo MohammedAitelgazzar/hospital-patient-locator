@@ -6,7 +6,7 @@ __pycache__/
 *.log
 
 # Ignore virtual environment
-myenv/
+#myenv/
 
 # Ignore large files
 yolov3.weights
