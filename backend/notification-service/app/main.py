@@ -1,28 +1,35 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List
-import os
-from dotenv import load_dotenv
 from datetime import datetime
+from app import DEFAULT_CONFIG
 
-# Chargement des variables d'environnement
-load_dotenv()
-
-app = FastAPI(title="Hospital Notification Service",
-             description="Service de notification pour le système de localisation des patients",
-             version="1.0.0")
+# Création de l'application FastAPI
+app = FastAPI(
+    title="Hospital Notification Service",
+    description="Service de notification pour le système de localisation des patients",
+    version="1.0.0"
+)
 
 class NotificationBase(BaseModel):
     recipient_id: str
     message: str
     notification_type: str  # 'email' ou 'sms'
-    priority: str = "normal"  # 'normal' ou 'urgent'
+    priority: str = DEFAULT_CONFIG["DEFAULT_PRIORITY"]  # 'normal' ou 'urgent'
     metadata: Optional[dict] = None
 
 class NotificationResponse(BaseModel):
+    recipient_id: str
+    message: str
+    notification_type: str
+    priority: str
+    metadata: Optional[dict]
     notification_id: str
     status: str
     timestamp: str
+
+# Base fictive pour stocker les notifications
+notifications_db = []
 
 @app.get("/")
 async def root():
@@ -34,6 +41,21 @@ async def send_notification(notification: NotificationBase, background_tasks: Ba
         # Générer un ID unique pour la notification
         notification_id = f"notif_{datetime.now().strftime('%Y%m%d%H%M%S')}"
         
+        # Créer une notification avec la structure souhaitée
+        notification_entry = {
+            "recipient_id": notification.recipient_id,
+            "message": notification.message,
+            "notification_type": notification.notification_type,
+            "priority": notification.priority,
+            "metadata": notification.metadata,
+            "notification_id": notification_id,
+            "status": "queued",
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        # Ajouter la notification à la base fictive
+        notifications_db.append(notification_entry)
+        
         # Ajouter la tâche d'envoi à la file d'attente
         if notification.notification_type == "email":
             background_tasks.add_task(send_email_notification, notification)
@@ -43,6 +65,11 @@ async def send_notification(notification: NotificationBase, background_tasks: Ba
             raise HTTPException(status_code=400, detail="Type de notification non supporté")
 
         return NotificationResponse(
+            recipient_id=notification.recipient_id,
+            message=notification.message,
+            notification_type=notification.notification_type,
+            priority=notification.priority,
+            metadata=notification.metadata,
             notification_id=notification_id,
             status="queued",
             timestamp=datetime.now().isoformat()
@@ -59,7 +86,20 @@ async def send_sms_notification(notification: NotificationBase):
     # TODO: Implémenter l'envoi de SMS
     pass
 
-@app.get("/api/v1/notifications/{notification_id}")
+@app.get("/api/v1/notifications", response_model=List[NotificationResponse])
+async def get_all_notifications():
+    """
+    Récupérer toutes les notifications enregistrées.
+    """
+    return [NotificationResponse(**notif) for notif in notifications_db]
+
+@app.get("/api/v1/notifications/{notification_id}", response_model=NotificationResponse)
 async def get_notification_status(notification_id: str):
-    # TODO: Implémenter la récupération du statut
-    return {"notification_id": notification_id, "status": "pending"}
+    """
+    Récupérer les détails d'une notification spécifique par ID.
+    """
+    # Rechercher la notification par ID dans la base fictive
+    notification = next((notif for notif in notifications_db if notif["notification_id"] == notification_id), None)
+    if not notification:
+        raise HTTPException(status_code=404, detail="Notification introuvable")
+    return NotificationResponse(**notification)
