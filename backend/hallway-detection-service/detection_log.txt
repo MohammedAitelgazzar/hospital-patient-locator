@@ -9,3 +9,8 @@
 2024-12-24 20:51:58,372 - INFO - Detected: Wearing Blue at coordinates: (100, 66, 122, 416)
 2024-12-24 20:51:58,915 - INFO - Detected: Wearing Blue at coordinates: (333, 18, 187, 448)
 2024-12-24 21:06:10,741 - INFO - Detected: Wearing Blue at coordinates: (67, 31, 526, 412)
+2024-12-24 21:42:15,639 - INFO - Detected: Wearing Blue at coordinates: (41, 1, 547, 477)
+2024-12-24 21:42:30,490 - INFO - Detected: Wearing Blue at coordinates: (105, 74, 219, 411)
+2024-12-24 21:42:31,427 - INFO - Detected: Wearing Green at coordinates: (275, 149, 189, 326)
+2024-12-24 21:42:32,336 - INFO - Detected: Wearing Green at coordinates: (101, 126, 117, 168)
+2024-12-24 21:42:33,747 - INFO - Detected: Wearing Green at coordinates: (183, 136, 152, 341)
