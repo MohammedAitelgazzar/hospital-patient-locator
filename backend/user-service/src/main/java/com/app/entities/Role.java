@@ -1,6 +1,7 @@
 package com.app.entities;
 
 import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,8 @@ public class Role {
 	public Role(String name) {
 		this.name = name;
 	}
+
 	private ERole name;
+
+
 }
