@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 logging.basicConfig(level=logging.DEBUG)
 
-# Mock user data - in a real app this would come from a database
+# Mock user data 
 MOCK_USER = {
     "id": "12345",
     "name": "John Doe",
@@ -29,7 +29,7 @@ def scan_qr_code():
         if not data or 'image' not in data:
             return jsonify({'error': 'No image data received'}), 400
 
-        # Log incoming request details
+        
         logging.debug(f"Processing image data...")
 
         # Convert base64 image to numpy array
@@ -40,15 +40,12 @@ def scan_qr_code():
         image_bytes = base64.b64decode(image_data)
         nparr = np.frombuffer(image_bytes, np.uint8)
         
-        # Convert YUV420 to grayscale
         width = int(data.get('width', 0))
         height = int(data.get('height', 0))
         
         if width and height:
-            # Reshape considering the YUV420 format
             y_plane = nparr[:width*height].reshape(height, width)
             
-            # Enhanced image processing pipeline
             # 1. Apply Gaussian blur to reduce noise
             blurred = cv2.GaussianBlur(y_plane, (5, 5), 0)
             
@@ -78,8 +75,7 @@ def scan_qr_code():
             results = []
             for obj in decoded_objects:
                 qr_data = obj.data.decode('utf-8')
-                # Here we're just using the mock user, but in a real app
-                # you would look up the user based on the QR code data
+                
                 results.append({
                     'qr_data': qr_data,
                     'type': obj.type,

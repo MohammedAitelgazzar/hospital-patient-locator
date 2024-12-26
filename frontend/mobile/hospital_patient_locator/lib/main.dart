@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'camera_screen.dart';
+import 'signin_screen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Camera QR Code Scanner',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: CameraScreen(),
+      title: 'Hospital Patient Locator',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: SignInScreen(),
     );
   }
 }
