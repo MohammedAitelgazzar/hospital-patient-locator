@@ -46,10 +46,10 @@ public class AuthController {
 
 			Set<Role> roleSet = new HashSet<>();
 			for (Role role : user.getRoles()) {
-				if (role.getName() == null || role.getName().isEmpty()) {
+				if (role.getName() == null || role.getName().toString().isEmpty()) {
 					return ResponseEntity.badRequest().body("Role name cannot be null or empty.");
 				}
-				Role existingRole = roleRepository.findByName(role.getName());
+				Role existingRole = roleRepository.findByName(role.getName().toString());
 				if (existingRole == null) {
 					existingRole = roleRepository.save(new Role(role.getName()));
 				}

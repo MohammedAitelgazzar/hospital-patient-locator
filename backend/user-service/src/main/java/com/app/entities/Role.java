@@ -15,14 +15,9 @@ public class Role {
 
 	@Id
 	private String id;
-
-	private String name;
-
-	public Role(String name) {
-		this.name = name;
-	}
-
 	private ERole name;
 
-
+	public Role(ERole name) {
+		this.name = name;
+	}
 }

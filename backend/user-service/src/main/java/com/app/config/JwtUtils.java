@@ -24,9 +24,9 @@ public class JwtUtils {
 
     
     public String generateToken(String username, Set<Role> roles) {
- 
+
         Set<String> roleNames = roles.stream()
-                .map(Role::getName) 
+                .map(role -> role.getName().toString())
                 .collect(Collectors.toSet());
 
         long expirationTime = 1000 * 60 * 60 * 24; // Durée de validité  1 jour

@@ -1,8 +1,7 @@
 package com.app.entities;
 
-public class ERole {
-    ADMIN,
-    PASSAGER,
-    CONDUCTEUR
+public enum ERole {
+    PATIENT,
+    DOCTEUR
 
 }
