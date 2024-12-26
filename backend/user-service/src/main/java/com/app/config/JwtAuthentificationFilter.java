@@ -25,7 +25,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
 	public JwtAuthentificationFilter(JwtUtils jwtUtils) {
 	        this.jwtUtils = jwtUtils;
-	    }
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
