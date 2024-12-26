@@ -3,6 +3,12 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 from app import DEFAULT_CONFIG
+from app.services.email_service import email_service
+import logging
+
+# Configuration du logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Création de l'application FastAPI
 app = FastAPI(
@@ -79,8 +85,27 @@ async def send_notification(notification: NotificationBase, background_tasks: Ba
         raise HTTPException(status_code=500, detail=str(e))
 
 async def send_email_notification(notification: NotificationBase):
-    # TODO: Implémenter l'envoi d'email
-    pass
+    try:
+        # Construire le sujet de l'email
+        subject = f"Notification {notification.priority} - {notification.metadata.get('department', '')}"
+        
+        # Utiliser le service email existant
+        success = await email_service.send_email(
+            recipient_email=notification.recipient_id,  # Assurez-vous que recipient_id est une adresse email
+            subject=subject,
+            message=notification.message,
+            metadata=notification.metadata
+        )
+        
+        # Mettre à jour le statut dans la base de données
+        for notif in notifications_db:
+            if notif["recipient_id"] == notification.recipient_id:
+                notif["status"] = "sent" if success else "failed"
+                
+        return success
+    except Exception as e:
+        logger.error(f"Erreur d'envoi d'email: {str(e)}")
+        return False
 
 async def send_sms_notification(notification: NotificationBase):
     # TODO: Implémenter l'envoi de SMS
