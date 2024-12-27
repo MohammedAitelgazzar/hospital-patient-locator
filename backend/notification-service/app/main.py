@@ -2,20 +2,79 @@ from fastapi import FastAPI, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
+import py_eureka_client.eureka_client as eureka_client
 from app import DEFAULT_CONFIG
 from app.services.email_service import email_service
 import logging
+import os
+from dotenv import load_dotenv
+import asyncio
 
-# Configuration du logging
+# Load environment variables
+load_dotenv()
+
+# Logging configuration
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Création de l'application FastAPI
+# FastAPI app configuration
 app = FastAPI(
     title="Hospital Notification Service",
     description="Service de notification pour le système de localisation des patients",
     version="1.0.0"
 )
+
+# Eureka configuration
+EUREKA_SERVER = os.getenv("EUREKA_SERVER", "http://localhost:8761/eureka")
+APP_NAME = os.getenv("APP_NAME", "NOTIFICATION-SERVICE")
+PORT = int(os.getenv("PORT", "5000"))
+INSTANCE_HOST = os.getenv("INSTANCE_HOST", "localhost")
+
+# Initialize eureka client outside of the event loop
+eureka_client_instance = None
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize Eureka client on startup"""
+    global eureka_client_instance
+    try:
+        eureka_client_instance = await eureka_client.init_async(
+            eureka_server=EUREKA_SERVER,
+            app_name=APP_NAME,
+            instance_port=PORT,
+            instance_host=INSTANCE_HOST,
+            status_page_url=f"http://{INSTANCE_HOST}:{PORT}/info",
+            health_check_url=f"http://{INSTANCE_HOST}:{PORT}/health"
+        )
+        logger.info(f"Successfully registered with Eureka server at {EUREKA_SERVER}")
+    except Exception as e:
+        logger.error(f"Failed to register with Eureka server: {e}")
+        raise
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Deregister from Eureka on shutdown"""
+    global eureka_client_instance
+    try:
+        if eureka_client_instance:
+            await eureka_client_instance.stop()
+            logger.info("Successfully deregistered from Eureka server")
+    except Exception as e:
+        logger.error(f"Error deregistering from Eureka: {e}")
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "UP"}
+
+# Info endpoint
+@app.get("/info")
+async def info():
+    return {
+        "app_name": APP_NAME,
+        "version": "1.0.0",
+        "status": "Running"
+    }
 
 class NotificationBase(BaseModel):
     recipient_id: str
