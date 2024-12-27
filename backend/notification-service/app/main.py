@@ -41,6 +41,7 @@ class NotificationResponse(BaseModel):
 
 # Base fictive pour stocker les notifications
 notifications_db = []
+sent_emails = []  # Nouvelle liste pour stocker les emails envoyés
 
 @app.get("/")
 async def root():
@@ -105,7 +106,16 @@ async def send_email_notification(notification: NotificationBase):
         for notif in notifications_db:
             if notif["recipient_email"] == notification.recipient_email:
                 notif["status"] = "sent" if success else "failed"
-                
+        
+        # Ajouter l'email envoyé à la liste
+        sent_emails.append({
+            "recipient_email": notification.recipient_email,
+            "subject": subject,
+            "message": notification.message,
+            "status": "sent" if success else "failed",
+            "timestamp": datetime.now().isoformat()
+        })
+        
         return success
     except Exception as e:
         logger.error(f"Erreur d'envoi d'email: {str(e)}")
@@ -146,3 +156,7 @@ async def get_notification_status(notification_id: str):
 async def get_index():
     with open("index.html") as f:
         return f.read()
+
+@app.get("/api/v1/sent-emails", response_model=List[dict])
+async def get_sent_emails():
+    return sent_emails  # Retourner la liste des emails envoyés

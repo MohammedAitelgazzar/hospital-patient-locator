@@ -14,48 +14,67 @@
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 30px;
         }
         form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: normal;
         }
-        input[type="email"],
-        input[type="text"],
-        textarea,
-        select {
+        input, textarea, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
         }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        select {
+            background-color: white;
+        }
         button {
-            background-color: #5cb85c;
+            background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            padding: 12px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #4cae4c;
+            background-color: #45a049;
         }
-        #response {
+        #sentEmailsContainer {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
-            padding: 10px;
-            background-color: #e7f3fe;
-            border-left: 6px solid #2196F3;
+            background-color: white;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #333;
         }
     </style>
 </head>
@@ -81,18 +100,33 @@
         </select>
 
         <label for="department">Département :</label>
-        <input type="text" id="department" name="department">
+        <input type="text" id="department" name="department" required>
 
         <button type="submit">Envoyer</button>
     </form>
 
-    <div id="response"></div>
+    <div id="sentEmailsContainer">
+        <h2>Emails Envoyés</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Destinataire</th>
+                    <th>Sujet</th>
+                    <th>Message</th>
+                    <th>Statut</th>
+                    <th>Date d'envoi</th>
+                </tr>
+            </thead>
+            <tbody id="emailTableBody">
+            </tbody>
+        </table>
+    </div>
 
     <script>
         document.getElementById('notificationForm').addEventListener('submit', async function(event) {
             event.preventDefault();
             const formData = new FormData(this);
-            const response = await fetch('/api/v1/notifications', {
+            await fetch('/api/v1/notifications', {
                 method: 'POST',
                 body: JSON.stringify({
                     recipient_email: formData.get('recipient_email'),
@@ -105,9 +139,48 @@
                     'Content-Type': 'application/json'
                 }
             });
-            const result = await response.json();
-            document.getElementById('response').innerText = JSON.stringify(result, null, 2);
+            // Réinitialiser le formulaire après l'envoi
+            this.reset();
+            // Charger les emails reçus après l'envoi
+            loadSentEmails();
         });
+
+        async function loadSentEmails() {
+            const response = await fetch('/api/v1/sent-emails');
+            const emails = await response.json();
+            const container = document.getElementById('sentEmailsContainer');
+            container.innerHTML = ''; // Clear previous content
+
+            if (emails.length === 0) {
+                container.innerHTML = '<p>Aucun email reçu.</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Destinataire</th>
+                        <th>Sujet</th>
+                        <th>Message</th>
+                        <th>Statut</th>
+                        <th>Date d'envoi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${emails.map(email => `
+                        <tr>
+                            <td>${email.recipient_email}</td>
+                            <td>${email.subject}</td>
+                            <td>${email.message}</td>
+                            <td>${email.status}</td>
+                            <td>${email.timestamp}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            container.appendChild(table);
+        }
     </script>
 </body>
 </html>

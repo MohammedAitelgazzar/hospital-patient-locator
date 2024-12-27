@@ -1,6 +1,7 @@
 import os
-import requests
 from dotenv import load_dotenv
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
 import logging
 
 # Configuration du logging
@@ -12,32 +13,28 @@ load_dotenv()
 
 class EmailService:
     def __init__(self):
-        self.mailgun_api_key = os.getenv("MAILGUN_API_KEY")
-        self.mailgun_domain = os.getenv("MAILGUN_DOMAIN")
-        self.mailgun_base_url = "https://api.eu.mailgun.net/v3"
-
+        self.configuration = sib_api_v3_sdk.Configuration()
+        self.configuration.api_key['api-key'] = os.getenv("BREVO_API_KEY")
+        
     async def send_email(self, recipient_email: str, subject: str, message: str) -> bool:
         try:
-            response = requests.post(
-                f"{self.mailgun_base_url}/{self.mailgun_domain}/messages",
-                auth=("api", self.mailgun_api_key),
-                data={
-                    "from": f"Notification Service <mailgun@{self.mailgun_domain}>",
-                    "to": [recipient_email],
-                    "subject": subject,
-                    "text": message,
-                    "html": message
-                }
+            api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(self.configuration))
+            
+            sender = {"name": "Notification Service", "email": os.getenv("SENDER_EMAIL")}
+            to = [{"email": recipient_email}]
+            
+            send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+                to=to,
+                html_content=message,
+                sender=sender,
+                subject=subject
             )
             
-            if response.status_code == 200:
-                logger.info(f"Email envoyé avec succès à {recipient_email}")
-                return True
-            else:
-                logger.error(f"Erreur lors de l'envoi de l'email: {response.text}")
-                return False
+            api_response = api_instance.send_transac_email(send_smtp_email)
+            logger.info(f"Email envoyé avec succès à {recipient_email}")
+            return True
                 
-        except Exception as e:
+        except ApiException as e:
             logger.error(f"Erreur lors de l'envoi de l'email à {recipient_email}: {str(e)}")
             return False
 
