@@ -66,6 +66,7 @@ java -jar target/eureka-server-0.0.1-SNAPSHOT.jar
 
 ### 3. Démarrer le Gateway Server
 Naviguez dans le dossier gateway-server et exécutez les commandes suivantes:
+```yaml
 mvn clean install
 java -jar target/gateway-server-0.0.1-SNAPSHOT.jar
 
