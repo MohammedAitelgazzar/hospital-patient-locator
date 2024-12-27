@@ -54,21 +54,44 @@ services:
 
 volumes:
   mongodb_data_container:
+```
 
 Ensuite, exécutez la commande suivante pour démarrer MongoDB :
-
+```yaml
 docker-compose up -d
-
+```
 ### 2. Démarrer le serveur Eureka
 Naviguez dans le dossier eureka-server et exécutez les commandes suivantes :
+```yaml
 mvn clean install
 java -jar target/eureka-server-0.0.1-SNAPSHOT.jar
-
+```
 ### 3. Démarrer le Gateway Server
 Naviguez dans le dossier gateway-server et exécutez les commandes suivantes:
 ```yaml
 mvn clean install
 java -jar target/gateway-server-0.0.1-SNAPSHOT.jar
+```
+### 4. Démarrer les autres microservices
+Répétez les étapes suivantes pour chaque service dans les dossiers suivants :
+health-data-service, hallway-detection-service, notification-service, patient-location-service, user-service.
+```yaml
+mvn clean install
+java -jar target/{nom-du-service}-0.0.1-SNAPSHOT.jar
+```
+### 5. Démarrer le frontend Web
+Naviguez dans le dossier frontend/web et exécutez les commandes suivantes :
+```yaml
+npm install
+npm start
+```
+### 6. Démarrer l'application mobile
+Naviguez dans le dossier frontend/mobile et exécutez les commandes suivantes :
+```yaml
+npm install
+npm start
+```
+---
 
 
 
