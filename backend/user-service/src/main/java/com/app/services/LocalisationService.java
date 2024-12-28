@@ -18,10 +18,13 @@ public class LocalisationService {
         return localisationRepository.save(localisation);
     }
 
+<<<<<<< HEAD
     public Optional<Localisation> getLastLocalisation() {
         return localisationRepository.findTopByOrderByCreatedAtDesc();
 
     }
+=======
+>>>>>>> 1bf2644cb12b230da951345c768947ff95ac64e7
     public List<Localisation> getAllLocalisations() {
         return localisationRepository.findAll();
     }

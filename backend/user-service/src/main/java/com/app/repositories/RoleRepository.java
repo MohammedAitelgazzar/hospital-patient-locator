@@ -11,6 +11,6 @@ import com.app.entities.Role;
 
 
 @Repository
-public interface RoleRepository extends MongoRepository<Role, Long> {
+public interface RoleRepository extends MongoRepository<Role, String> {
     Role findByName(String name);
 }

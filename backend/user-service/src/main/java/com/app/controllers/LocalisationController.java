@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+>>>>>>> 1bf2644cb12b230da951345c768947ff95ac64e7
 @RestController
 @RequestMapping("/api/localisations")
 public class LocalisationController {
@@ -35,10 +39,17 @@ public class LocalisationController {
         }
     }
 
+<<<<<<< HEAD
     @GetMapping("/last")
     public ResponseEntity<Localisation> getLastLocalisation() {
         try {
             return localisationService.getLastLocalisation()
+=======
+    @GetMapping("/{id}")
+    public ResponseEntity<Localisation> getLocalisationById(@PathVariable String id) {
+        try {
+            return localisationService.getLocalisationById(id)
+>>>>>>> 1bf2644cb12b230da951345c768947ff95ac64e7
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {

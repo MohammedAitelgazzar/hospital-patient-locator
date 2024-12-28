@@ -36,7 +36,11 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth.
+<<<<<<< HEAD
 						requestMatchers("/api/**", "/api/localisations/**").permitAll()
+=======
+						requestMatchers("/auth/login", "/auth/register", "/api/localisations/**").permitAll()
+>>>>>>> 1bf2644cb12b230da951345c768947ff95ac64e7
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 						.anyRequest().authenticated())
