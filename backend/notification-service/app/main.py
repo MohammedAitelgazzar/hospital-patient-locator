@@ -2,17 +2,24 @@ from fastapi import FastAPI, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
+import py_eureka_client.eureka_client as eureka_client
 from app import DEFAULT_CONFIG
 from app.services.email_service import email_service
 import logging
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+import os
+from dotenv import load_dotenv
+import asyncio
 
-# Configuration du logging
+# Load environment variables
+load_dotenv()
+
+# Logging configuration
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Création de l'application FastAPI
+# FastAPI app configuration
 app = FastAPI(
     title="Hospital Notification Service",
     description="Service de notification pour le système de localisation des patients",

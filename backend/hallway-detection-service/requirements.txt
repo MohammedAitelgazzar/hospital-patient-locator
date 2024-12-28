@@ -1,7 +1,13 @@
 certifi==2024.12.14
 charset-normalizer==3.4.1
 idna==3.10
-numpy==2.2.1
+numpy==1.24.4
 opencv-python==4.10.0.84
 requests==2.32.3
 urllib3==2.3.0
+fastapi==0.104.1
+uvicorn==0.24.0
+python-dotenv==1.0.0
+py-eureka-client==0.11.8
+pydantic==2.5.2
+python-multipart==0.0.6

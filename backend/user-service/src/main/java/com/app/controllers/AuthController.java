@@ -1,7 +1,6 @@
 package com.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -10,16 +9,14 @@ import com.app.config.JwtUtils;
 import com.app.entities.Role;
 import com.app.entities.User;
 import com.app.repositories.RoleRepository;
-
 import com.app.services.AuthenService;
 
 import java.util.HashSet;
 import java.util.Map;
-
 import java.util.Set;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api")
 public class AuthController {
 
 	@Autowired
@@ -37,7 +34,6 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody User user) {
 		try {
-
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 			if (user.getRoles() == null || user.getRoles().isEmpty()) {
@@ -46,10 +42,10 @@ public class AuthController {
 
 			Set<Role> roleSet = new HashSet<>();
 			for (Role role : user.getRoles()) {
-				if (role.getName() == null || role.getName().isEmpty()) {
+				if (role.getName() == null || role.getName().toString().isEmpty()) {
 					return ResponseEntity.badRequest().body("Role name cannot be null or empty.");
 				}
-				Role existingRole = roleRepository.findByName(role.getName());
+				Role existingRole = roleRepository.findByName(role.getName().toString());
 				if (existingRole == null) {
 					existingRole = roleRepository.save(new Role(role.getName()));
 				}
@@ -92,6 +88,16 @@ public class AuthController {
 			}
 		} catch (Exception e) {
 			return ResponseEntity.internalServerError().body("An error occurred during login: " + e.getMessage());
+		}
+	}
+
+	@GetMapping("/user/{username}")
+	public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+		try {
+			User user = userService.findByUsername(username);
+			return ResponseEntity.ok(user);
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body("User not found: " + e.getMessage());
 		}
 	}
 }

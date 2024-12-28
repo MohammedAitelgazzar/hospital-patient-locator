@@ -1,0 +1,7 @@
+Flask==3.0.3
+Flask-CORS==4.0.0
+opencv-python==4.10.0.84  
+numpy==1.24.4
+pyzbar==0.1.9
+py-eureka-client==0.11.8
+python-dotenv==1.0.1

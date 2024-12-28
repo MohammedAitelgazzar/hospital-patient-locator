@@ -1,0 +1,99 @@
+/* Center the whole page */
+.signin-signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
+  }
+  
+  /* Login Container Styling */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Login Card Styling */
+  .login-card {
+    width: 100%;
+    max-width: 450px; /* Adjust width as needed */
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Login Image Styling */
+  .login-image img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
+  /* Title Styling */
+  .form-title {
+    font-size: 2rem;
+    color: #6a1b9a; /* Violet foncé */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Input Group Styling */
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #6a1b9a;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* Button Styling */
+  .login-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    background: #800080; /* Violet */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background: #9932CC; /* Violet clair */
+  }
+  
+  /* Footer Styling */
+  .form-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .form-footer a {
+    color: #6a1b9a;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .form-footer a:hover {
+    text-decoration: underline;
+  }
+  

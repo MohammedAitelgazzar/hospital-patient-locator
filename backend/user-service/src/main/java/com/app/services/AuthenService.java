@@ -6,6 +6,8 @@ import com.app.config.JwtUtils;
 import com.app.entities.User;
 import com.app.repositories.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class AuthenService {
 
@@ -37,5 +39,10 @@ public class AuthenService {
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username)
 				.orElseThrow(() -> new RuntimeException("User not found"));
+	}
+
+	public User findById(Long id) {
+		return userRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
 	}
 }

@@ -2,14 +2,16 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app (2)" />
         <module name="app (1)" />
+        <module name="covoiturage" />
       </profile>
-      <profile name="Annotation profile for spring-microservice" enabled="true">
+      <profile name="Annotation profile for health_data_service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -27,6 +29,7 @@
       <module name="app (1)" options="-parameters" />
       <module name="app (2)" options="-parameters" />
       <module name="app (3)" options="-parameters" />
+      <module name="covoiturage" options="-parameters" />
     </option>
   </component>
 </project>
