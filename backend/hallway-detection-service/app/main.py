@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import py_eureka_client.eureka_client as eureka_client
 import logging
@@ -25,6 +26,15 @@ app = FastAPI(
     title="Hallway Detection Service",
     description="Service for detecting hallways and processing images",
     version="1.0.0"
+)
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Eureka configuration

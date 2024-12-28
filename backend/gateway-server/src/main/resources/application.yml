@@ -9,9 +9,9 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/users/**, /auth/**
+            - Path=/api/localisations/**, /auth/**, /api/users/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=0
 
         - id: patient-location-service
           uri: http://localhost:5000
