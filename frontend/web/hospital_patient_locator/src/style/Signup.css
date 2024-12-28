@@ -1,25 +1,16 @@
-/* General Page Styling */
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #e0b5ff, #f3c6f6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-/* Container Styling */
-.signup-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
+/* Center the whole page */
 .signup-container {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100%;
+}
+
+/* Signup Card Styling */
+.signup-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 450px; /* Adjust width as needed */
   background: #fff;
   padding: 30px;
   border-radius: 15px;
@@ -27,7 +18,7 @@ body {
 }
 
 /* Title Styling */
-.signup-title {
+.form-title {
   font-size: 2rem;
   color: #6a1b9a; /* Violet foncé */
   text-align: center;
@@ -75,18 +66,18 @@ body {
 }
 
 /* Footer Styling */
-.already-account {
+.form-footer {
   text-align: center;
   margin-top: 20px;
   font-size: 0.9rem;
 }
 
-.already-account a {
+.form-footer a {
   color: #6a1b9a;
   text-decoration: none;
   font-weight: bold;
 }
 
-.already-account a:hover {
+.form-footer a:hover {
   text-decoration: underline;
 }

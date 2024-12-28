@@ -1,34 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./App.css";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import SignUp from './component/Signup';
+import SignIn from './component/SignIn';
+import FloorMapComponent from './component/FloorMapComponent';
 
 const App = () => {
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-image">
-          <img src={require("./assets/hospitallogin.png")} alt="Medical Illustration" />
-        </div>
-        <div className="login-form">
-          <h2 className="form-title">Login</h2>
-          <form>
-            <div className="input-group">
-              <label htmlFor="username">Username</label>
-              <input type="text" id="username" placeholder="Enter your username" />
-            </div>
-            <div className="input-group">
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" placeholder="Enter your password" />
-            </div>
-            <button type="submit" className="login-button">Login</button>
-          </form>
-          <p className="form-footer">
-            Don’t have an account? <Link to="/signup">Sign up</Link>
-          </p>
-        </div>
-      </div>
-    </div>
+    <Routes>
+  <Route path="/" element={<SignIn />} />
+  <Route path="/signup" element={<SignUp />} />
+  <Route path="/FloorMapComponent" element={<FloorMapComponent />} />
+</Routes>
   );
 };
 
+//export default App;
+
+// import React from 'react';
+// import FloorMapComponent from './component/FloorMapComponent';
+// import SignUp from './component/Signup';
+// import SignIn from './component/SignIn';
+
+// const App = () => {
+//   return (
+//     <div>
+//       <h1>Hospital Map</h1>
+//       <FloorMapComponent />
+//     </div>
+//   );
+// };
+
 export default App;
+
